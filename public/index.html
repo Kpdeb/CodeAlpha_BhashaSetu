@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BhashaSetu AI - Premium Indian Regional & Global Translator</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Elements -->
+  <div class="glow-bg glow-primary"></div>
+  <div class="glow-bg glow-secondary"></div>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fa-solid fa-language"></i>
+        </div>
+        <div class="logo-text">
+          <h1>BhashaSetu <span>AI</span></h1>
+          <p>Connecting India through Language</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <!-- Engine Selector -->
+        <div class="engine-control">
+          <label for="engine-select"><i class="fa-solid fa-gears"></i> Engine:</label>
+          <select id="engine-select">
+            <option value="mymemory">MyMemory (Free)</option>
+            <option value="sarvam" selected>Sarvam AI (Indic LLM)</option>
+            <option value="libretranslate">LibreTranslate</option>
+          </select>
+        </div>
+
+        <!-- Settings Trigger -->
+        <button id="settings-btn" class="icon-btn" title="API Settings">
+          <i class="fa-solid fa-cog"></i>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN TRANSLATION AREA -->
+    <main class="main-content">
+      <div class="translator-grid">
+        
+        <!-- Source Language Card -->
+        <div class="translator-card source-card">
+          <div class="card-header">
+            <div class="lang-selector-wrapper">
+              <button id="src-lang-btn" class="lang-select-btn">
+                <span id="src-lang-label">Detect Language</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              
+              <!-- Custom dropdown menu with search filter -->
+              <div id="src-lang-dropdown" class="lang-dropdown hidden">
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="src-lang-search" placeholder="Search language...">
+                </div>
+                <div class="lang-options-list" id="src-lang-options">
+                  <!-- JS injected options -->
+                </div>
+              </div>
+            </div>
+            
+            <div class="char-count">
+              <span id="char-current">0</span>/<span id="char-max">2000</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <textarea id="source-text" placeholder="Type or paste text to translate... (e.g. Hello, how are you?)"></textarea>
+            <button id="clear-text-btn" class="clear-btn hidden" title="Clear text">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="card-footer">
+            <div class="toolbar-actions">
+              <!-- Speech Input -->
+              <button id="speech-in-btn" class="action-btn circle-btn" title="Voice Input (Speech-to-Text)">
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+              <!-- Speech Synthesis Playback -->
+              <button id="speech-out-src-btn" class="action-btn circle-btn" title="Read Aloud" disabled>
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+            
+            <span class="toolbar-hint">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to translate</span>
+          </div>
+        </div>
+
+        <!-- Swap Button Controller -->
+        <div class="swap-divider">
+          <button id="swap-langs-btn" class="swap-btn" title="Swap Languages">
+            <i class="fa-solid fa-right-left"></i>
+          </button>
+        </div>
+
+        <!-- Target Language Card -->
+        <div class="translator-card target-card">
+          <div class="card-header">
+            <div class="lang-selector-wrapper">
+              <button id="tgt-lang-btn" class="lang-select-btn">
+                <span id="tgt-lang-label">Hindi (हिन्दी)</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              
+              <!-- Custom dropdown menu with search filter -->
+              <div id="tgt-lang-dropdown" class="lang-dropdown hidden">
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="tgt-lang-search" placeholder="Search language...">
+                </div>
+                <div class="lang-options-list" id="tgt-lang-options">
+                  <!-- JS injected options -->
+                </div>
+              </div>
+            </div>
+            
+            <div class="engine-badge" id="current-engine-badge">
+              Sarvam AI
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Shimmer loading effect -->
+            <div id="translation-loader" class="shimmer-loader hidden">
+              <div class="shimmer-line"></div>
+              <div class="shimmer-line shorter"></div>
+              <div class="shimmer-line"></div>
+            </div>
+            <textarea id="target-text" readonly placeholder="Translation will appear here..."></textarea>
+          </div>
+
+          <div class="card-footer">
+            <div class="toolbar-actions">
+              <!-- Speech Synthesis Playback -->
+              <button id="speech-out-tgt-btn" class="action-btn circle-btn" title="Read Aloud" disabled>
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+              <!-- Copy Button -->
+              <button id="copy-btn" class="action-btn circle-btn" title="Copy Translation" disabled>
+                <i class="fa-solid fa-copy"></i>
+              </button>
+            </div>
+            
+            <button id="manual-translate-btn" class="translate-trigger-btn">
+              <span>Translate</span> <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR DIALOG FOR HISTORY & STARRED ITEMS -->
+      <section class="logs-section">
+        <div class="logs-header">
+          <div class="logs-tabs">
+            <button id="tab-history" class="tab-btn active"><i class="fa-solid fa-history"></i> Recent Logs</button>
+            <button id="tab-favorites" class="tab-btn"><i class="fa-solid fa-star"></i> Starred</button>
+          </div>
+          <button id="clear-logs-btn" class="text-btn danger" title="Clear database log history">
+            <i class="fa-solid fa-trash-can"></i> Clear All
+          </button>
+        </div>
+
+        <div class="logs-container" id="logs-container">
+          <!-- DB Entries dynamically loaded -->
+          <div class="empty-state">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <p>No recent translations. Start translating to log history!</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-sliders"></i> Configuration Settings</h2>
+        <button id="close-settings-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Sarvam Key Setup -->
+        <div class="setting-group">
+          <label for="sarvam-api-key-input">
+            <strong>Sarvam AI Subscription Key</strong>
+            <span class="help-text">Obtain from the <a href="https://dashboard.sarvam.ai/" target="_blank" rel="noopener">Sarvam AI Dashboard</a>. Used for advanced regional translation.</span>
+          </label>
+          <div class="input-with-toggle">
+            <input type="password" id="sarvam-api-key-input" placeholder="Paste your api-subscription-key here">
+            <button id="toggle-key-visibility" class="toggle-btn"><i class="fa-solid fa-eye"></i></button>
+          </div>
+          <p class="status-indicator-key" id="sarvam-status-msg"></p>
+        </div>
+
+        <!-- Custom LibreTranslate URL Setup -->
+        <div class="setting-group">
+          <label for="libretranslate-url-input">
+            <strong>LibreTranslate Custom Server Endpoint URL</strong>
+            <span class="help-text">Set your self-hosted or public mirror address.</span>
+          </label>
+          <input type="text" id="libretranslate-url-input" placeholder="e.g. http://127.0.0.1:5000/translate">
+        </div>
+
+        <!-- Autotranslate toggle -->
+        <div class="setting-group row-group">
+          <div>
+            <strong>Instant Auto-Translate</strong>
+            <p class="help-text">Translates automatically while typing (after a 600ms pause).</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="autotranslate-toggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="save-settings-btn" class="primary-btn">Save Configurations</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
