@@ -7,7 +7,7 @@ BhashaSetu AI (Connecting India through Language) is a full-stack web applicatio
 ## 🚀 Live Demo
 
 You can access the live deployed application here:
-**👉 [Live Translation App (Render Demo)](PASTE_YOUR_RENDER_URL_HERE) 👈**
+**👉 [Live Translation App (Render Demo)](https://codealpha-bhashasetu.onrender.com) 👈**
 
 *(Note: Replace `PASTE_YOUR_RENDER_URL_HERE` with your actual Render deployment link, e.g. `https://codealpha-bhashasetu.onrender.com`)*
 
